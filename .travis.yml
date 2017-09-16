@@ -1,0 +1,10 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+script:
+  - docker build -t infolinks/gcloud-docker-login:${TRAVIS_TAG:=${TRAVIS_COMMIT}} .
+
+after_success:
+  - docker push infolinks/gcloud-docker-login:${TRAVIS_TAG:=${TRAVIS_COMMIT}}
