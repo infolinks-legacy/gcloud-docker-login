@@ -21,5 +21,4 @@ gcloud auth activate-service-account --key-file=${GCP_SA_JSON_FILE}
 gcloud docker --authorize-only
 
 # print the contents of '.dockercfg'
-# the intended usage of this image is invoking it and saving its output into the host's dockercfg file
 cat ~/.dockercfg
