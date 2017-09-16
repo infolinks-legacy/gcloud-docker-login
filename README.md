@@ -1,5 +1,7 @@
 # gcloud-docker-login
 
+[![Build Status](https://travis-ci.org/infolinks/gcloud-docker-login.svg?branch=master)](https://travis-ci.org/infolinks/gcloud-docker-login)
+
 Generates '.dockercfg' file with a valid GCR access token, given a
 service account JSON content.
 
