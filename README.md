@@ -24,3 +24,7 @@ this command to create a `.dockercfg` file that will use your service
 account file to access GCR:
 
     docker run -e "GCP_SA_JSON=$(cat my-sa-key.json)" infolinks/gcloud-docker-login > ~/.dockercfg
+
+## Contributions
+
+Any contribution to the project will be appreciated! Whether it's bug reports, feature requests, pull requests - all are welcome, as long as you follow our [contribution guidelines for this project](CONTRIBUTING.md) and our [code of conduct](CODE_OF_CONDUCT.md).
