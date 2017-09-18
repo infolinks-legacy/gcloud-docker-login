@@ -5,18 +5,19 @@ services:
 
 before_script:
   - docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
-  - export IMAGE_TAG="$( [[ ${TRAVIS_TAG} =~ ^v[0-9]+$ ]] && echo ${TRAVIS_TAG} || echo ${TRAVIS_COMMIT} )"
 script:
-  - docker build -t infolinks/gcloud-docker-login:${IMAGE_TAG} .
+  - docker build -t infolinks/gcloud-docker-login:${TRAVIS_COMMIT} .
   - |
     if [[ ${TRAVIS_TAG} =~ ^v[0-9]+$ ]]; then
-      docker tag infolinks/gcloud-docker-login:${IMAGE_TAG} infolinks/gcloud-docker-login:latest
+      docker tag infolinks/gcloud-docker-login:${TRAVIS_COMMIT} infolinks/gcloud-docker-login:${TRAVIS_TAG}
+      docker push infolinks/gcloud-docker-login:${TRAVIS_TAG}
+      docker tag infolinks/gcloud-docker-login:${TRAVIS_COMMIT} infolinks/gcloud-docker-login:latest
       docker push infolinks/gcloud-docker-login:latest
     fi
 after_success:
   - |
     if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
-      docker run infolinks/github-release:v2 \
+      docker run infolinks/github-release:v3 \
           --token="${GITHUB_ACCESS_TOKEN}" \
           --repo="${TRAVIS_REPO_SLUG}" \
           --commit="${TRAVIS_COMMIT}"
