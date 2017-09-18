@@ -7,7 +7,7 @@ before_script:
   - docker login -u "${DOCKERHUB_USERNAME}" -p "${DOCKERHUB_PASSWORD}"
   - export IMAGE_TAG="$( [[ ${TRAVIS_TAG} =~ ^v[0-9]+$ ]] && echo ${TRAVIS_TAG} || echo ${TRAVIS_COMMIT} )"
 script:
-  - docker build -t infolinks/github-release:${IMAGE_TAG} .
+  - docker build -t infolinks/gcloud-docker-login:${IMAGE_TAG} .
   - |
     if [[ ${TRAVIS_TAG} =~ ^v[0-9]+$ ]]; then
       docker tag infolinks/gcloud-docker-login:${IMAGE_TAG} infolinks/gcloud-docker-login:latest
