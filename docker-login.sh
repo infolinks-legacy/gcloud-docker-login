@@ -7,18 +7,29 @@ if [[ -z "${GCP_SA_JSON}" ]]; then
     exit 1
 fi
 
-# fail on first failure
-set -e
-
 # store it in a temporary file
 GCP_SA_JSON_FILE="/tmp/gcp_service_account.json"
 echo -nE "${GCP_SA_JSON}" > ${GCP_SA_JSON_FILE}
+if [[ $? != 0 ]]; then
+    echo "failed writing service account JSON file to '${GCP_SA_JSON_FILE}'"
+    exit 1
+fi
 
 # activate the service account
 gcloud auth activate-service-account --key-file=${GCP_SA_JSON_FILE}
+if [[ $? != 0 ]]; then
+    echo "failed activating service account from JSON file at '${GCP_SA_JSON_FILE}'" >&2
+    echo "JSON file contents:" >&2
+    cat ${GCP_SA_JSON_FILE} >&2
+    exit 1
+fi
 
 # perform Docker login to GCR
 gcloud docker --authorize-only
+if [[ $? != 0 ]]; then
+    echo "failed generating Docker authentication file to GCR" >&2
+    exit 1
+fi
 
 # print the contents of '.dockercfg'
 cat ~/.dockercfg
